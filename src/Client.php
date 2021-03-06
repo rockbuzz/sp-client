@@ -124,7 +124,7 @@ class Client
     public function addSubscriber(array $data): Subscriber
     {
         return tap(
-            new Subscriber($this->api->post("/api/v1/subscribers", $data)['data']), 
+            new Subscriber($this->api->post("/api/v1/subscribers", $data)['data']),
             function ($subscriber) {
                 SubscriberCreated::dispatch($subscriber);
             }

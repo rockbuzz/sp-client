@@ -2,15 +2,15 @@
 
 namespace Rockbuzz\SpClient\Data;
 
-class Tag extends DataTransferObject
+use Carbon\Carbon;
+use DateTime;
+
+class Tag extends Base
 {
-    protected function properties(): array
+    use HasDates;
+
+    public function updatedAt(): DateTime
     {
-        return [
-            'id',
-            'name',
-            'created_at',
-            'update_at'
-        ];
+        return Carbon::createFromTimestamp($this->update_at);
     }
 }

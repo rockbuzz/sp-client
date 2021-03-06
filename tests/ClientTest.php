@@ -2,9 +2,10 @@
 
 namespace Tests;
 
+use Carbon\Carbon;
 use Rockbuzz\SpClient\Client;
 use Illuminate\Support\Facades\Http;
-use Rockbuzz\SpClient\Data\{Tags, Tag, Links, Meta};
+use Rockbuzz\SpClient\Data\{Tag, Campaign, Subscriber};
 
 class ClientTest extends TestCase
 {
@@ -15,6 +16,170 @@ class ClientTest extends TestCase
         parent::setUp();
 
         $this->baseUrl = config('sp_client.base_uri');
+    }
+
+    /** @test */
+    public function it_should_return_campaigns()
+    {
+        $fullUrl = "{$this->baseUrl}/api/v1/campaigns?page=1";
+
+        $data = [
+            'data' => [
+                [
+                    "id" => 1,
+                    "name" => "name",
+                    "subject" => "My Campaign Subject",
+                    "content" => "My Email Content",
+                    "status_id" => 1,
+                    "template_id" => 1,
+                    "email_service_id" => 1,
+                    "from_name" => "SendPortal",
+                    "from_email" => "test@sendportal.io",
+                    "is_open_tracking" => true,
+                    "is_click_tracking" => true,
+                    "sent_count" => 0,
+                    "open_count" => 0,
+                    "click_count" => 0,
+                    "send_to_all" => true,
+                    "tags" => [],
+                    "save_as_draft" => false,
+                    "scheduled_at" => "2020-07-24 08:46:54",
+                    "created_at" => "2020-07-24 08:23:38",
+                    "updated_at" => "2020-07-24 09:43:42"
+                ],
+                [
+                    "id" => 2,
+                    "name" => "name",
+                    "subject" => "My Campaign Subject 2",
+                    "content" => "My Email Content 2",
+                    "status_id" => 1,
+                    "template_id" => 1,
+                    "email_service_id" => 1,
+                    "from_name" => "SendPortal",
+                    "from_email" => "test@sendportal.io",
+                    "is_open_tracking" => true,
+                    "is_click_tracking" => true,
+                    "sent_count" => 0,
+                    "open_count" => 0,
+                    "click_count" => 0,
+                    "send_to_all" => true,
+                    "tags" => [],
+                    "save_as_draft" => false,
+                    "scheduled_at" => "2020-07-24 08:46:54",
+                    "created_at" => "2020-07-24 08:23:38",
+                    "updated_at" => "2020-07-24 09:43:42"
+                ]
+            ],
+            'links' => [
+                'first' => $fullUrl,
+                'last' => $fullUrl,
+                'prev' => null,
+                'next' => null
+            ],
+            'meta' => [
+                'current_page' => 1,
+                'from' => 1,
+                'last_page' => 1,
+                'path' => $fullUrl,
+                'per_page' => 25,
+                'to' => 1,
+                'total' => 1
+            ]
+        ];
+
+        Http::fake([
+            $fullUrl =>  Http::response(json_encode($data), 200)
+        ]);
+
+        $result = $this->newClient()->campaigns();
+
+        $this->assertInstanceOf(Campaign::class, $result['data'][0]);
+    }
+
+    /** @test */
+    public function it_should_return_campaign()
+    {
+        $fullUrl = "{$this->baseUrl}/api/v1/campaigns/1";
+
+        $data = [
+            'data' => [
+                "id" => 1,
+                "name" => "name",
+                "subject" => "My Campaign Subject",
+                "content" => "My Email Content",
+                "status_id" => 1,
+                "template_id" => 1,
+                "email_service_id" => 1,
+                "from_name" => "SendPortal",
+                "from_email" => "test@sendportal.io",
+                "is_open_tracking" => true,
+                "is_click_tracking" => true,
+                "sent_count" => 0,
+                "open_count" => 0,
+                "click_count" => 0,
+                "send_to_all" => true,
+                "tags" => [],
+                "save_as_draft" => false,
+                "scheduled_at" => "2020-07-24 08:46:54",
+                "created_at" => "2020-07-24 08:23:38",
+                "updated_at" => "2020-07-24 09:43:42"
+            ]
+        ];
+
+        Http::fake([
+            $fullUrl =>  Http::response(json_encode($data), 200)
+        ]);
+
+        $campaign = $this->newClient()->campaign(1);
+
+        $this->assertInstanceOf(Campaign::class, $campaign);
+        $this->assertEquals($campaign->id, 1);
+        $this->assertEquals($campaign->name, 'name');
+        $this->assertEquals($campaign->created_at, '2020-07-24 08:23:38');
+        $this->assertEquals($campaign->updated_at, '2020-07-24 09:43:42');
+        $this->assertInstanceOf(Carbon::class, $campaign->createdAt());
+        $this->assertInstanceOf(Carbon::class, $campaign->updatedAt());
+    }
+
+    /** @test */
+    public function it_should_return_campaign_created()
+    {
+        $fullUrl = "{$this->baseUrl}/api/v1/campaigns";
+
+        $data = [
+            'data' => [
+                "id" => 1,
+                "name" => "name",
+                "subject" => "My Campaign Subject",
+                "content" => "My Email Content",
+                "status_id" => 1,
+                "template_id" => 1,
+                "email_service_id" => 1,
+                "from_name" => "SendPortal",
+                "from_email" => "test@sendportal.io",
+                "is_open_tracking" => true,
+                "is_click_tracking" => true,
+                "sent_count" => 0,
+                "open_count" => 0,
+                "click_count" => 0,
+                "send_to_all" => true,
+                "tags" => [],
+                "save_as_draft" => false,
+                "scheduled_at" => "2020-07-24 08:46:54",
+                "created_at" => "2020-07-24 08:23:38",
+                "updated_at" => "2020-07-24 09:43:42"
+            ]
+        ];
+
+        Http::fake([
+            $fullUrl =>  Http::response(json_encode($data), 201)
+        ]);
+
+        $campaign = $this->newClient()->addCampaign(['name' => 'Test Tag']);
+
+        $this->assertInstanceOf(Campaign::class, $campaign);
+        $this->assertEquals($campaign->id, 1);
+        $this->assertEquals($campaign->subject, 'My Campaign Subject');
     }
 
     /** @test */
@@ -58,12 +223,9 @@ class ClientTest extends TestCase
             $fullUrl =>  Http::response(json_encode($data), 200)
         ]);
 
-        $tags = $this->newClient()->tags();
+        $result = $this->newClient()->tags();
 
-        $this->assertInstanceOf(Tags::class, $tags);
-        $this->assertInstanceOf(Tag::class, $tags->data[0]);
-        $this->assertInstanceOf(Links::class, $tags->links);
-        $this->assertInstanceOf(Meta::class, $tags->meta);
+        $this->assertInstanceOf(Tag::class, $result['data'][0]);
     }
 
     /** @test */
@@ -91,6 +253,8 @@ class ClientTest extends TestCase
         $this->assertEquals($tag->name, 'Test Tag');
         $this->assertEquals($tag->created_at, '2020-03-23 12:44:14');
         $this->assertEquals($tag->update_at, '2020-03-23 12:44:14');
+        $this->assertInstanceOf(Carbon::class, $tag->createdAt());
+        $this->assertInstanceOf(Carbon::class, $tag->updatedAt());
     }
 
     /** @test */
@@ -118,6 +282,122 @@ class ClientTest extends TestCase
         $this->assertEquals($tag->name, 'Test Tag');
         $this->assertEquals($tag->created_at, '2020-03-23 12:44:14');
         $this->assertEquals($tag->update_at, '2020-03-23 12:44:14');
+    }
+
+    /** @test */
+    public function it_should_return_subscribers()
+    {
+        $fullUrl = "{$this->baseUrl}/api/v1/subscribers?page=1";
+
+        $data = [
+            'data' => [
+                [
+                    "id" => 1,
+                    "first_name" => "Test",
+                    "last_name" => "Subscriber",
+                    "email" => "testsubscriber@example.com",
+                    "unsubscribed_at" => null,
+                    "created_at" => "2020-03-23 13:44:09",
+                    "updated_at" =>"2020-03-23 13:44:09"
+                ],
+                [
+                    "id" => 2,
+                    "first_name" => "Test",
+                    "last_name" => "Subscriber Two",
+                    "email" => "testsubscriber2@example.com",
+                    "unsubscribed_at" => "2020-08-02 08:07:08",
+                    "created_at" => "2020-03-23 13:50:39",
+                    "updated_at" => "2020-03-23 13:50:39"
+                ]
+            ],
+            'links' => [
+                'first' => $fullUrl,
+                'last' => $fullUrl,
+                'prev' => null,
+                'next' => null
+            ],
+            'meta' => [
+                'current_page' => 1,
+                'from' => 1,
+                'last_page' => 1,
+                'path' => $fullUrl,
+                'per_page' => 25,
+                'to' => 1,
+                'total' => 1
+            ]
+        ];
+
+        Http::fake([
+            $fullUrl =>  Http::response(json_encode($data), 200)
+        ]);
+
+        $result = $this->newClient()->subscribers();
+
+        $this->assertInstanceOf(Subscriber::class, $result['data'][0]);
+    }
+
+    /** @test */
+    public function it_should_return_subscriber()
+    {
+        $fullUrl = "{$this->baseUrl}/api/v1/subscribers/1";
+
+        $data = [
+            'data' => [
+                "id" => 1,
+                "first_name" => "Test",
+                "last_name" => "Subscriber",
+                "email" => "testsubscriber@example.com",
+                "unsubscribed_at" => null,
+                "created_at" => "2020-03-23 13:44:09",
+                "updated_at" =>"2020-03-23 13:44:09"
+            ]
+        ];
+
+        Http::fake([
+            $fullUrl =>  Http::response(json_encode($data), 200)
+        ]);
+
+        $subscriber = $this->newClient()->subscriber(1);
+
+        $this->assertInstanceOf(Subscriber::class, $subscriber);
+        $this->assertEquals($subscriber->id, 1);
+        $this->assertEquals($subscriber->first_name, 'Test');
+        $this->assertEquals($subscriber->last_name, 'Subscriber');
+        $this->assertEquals($subscriber->unsubscribed_at, null);
+        $this->assertEquals($subscriber->created_at, '2020-03-23 13:44:09');
+        $this->assertEquals($subscriber->updated_at, '2020-03-23 13:44:09');
+    }
+
+    /** @test */
+    public function it_should_return_subscriber_created()
+    {
+        $fullUrl = "{$this->baseUrl}/api/v1/subscribers";
+
+        $data = [
+            'data' => [
+                "id" => 1,
+                "first_name" => "Test",
+                "last_name" => "Subscriber",
+                "email" => "testsubscriber@example.com",
+                "unsubscribed_at" => null,
+                "created_at" => "2020-03-23 13:44:09",
+                "updated_at" =>"2020-03-23 13:44:09"
+            ]
+        ];
+
+        Http::fake([
+            $fullUrl =>  Http::response(json_encode($data), 201)
+        ]);
+
+        $subscriber = $this->newClient()->addSubscriber(['name' => 'Test Tag']);
+
+        $this->assertInstanceOf(Subscriber::class, $subscriber);
+        $this->assertEquals($subscriber->id, 1);
+        $this->assertEquals($subscriber->first_name, 'Test');
+        $this->assertEquals($subscriber->last_name, 'Subscriber');
+        $this->assertEquals($subscriber->unsubscribed_at, null);
+        $this->assertEquals($subscriber->created_at, '2020-03-23 13:44:09');
+        $this->assertEquals($subscriber->updated_at, '2020-03-23 13:44:09');
     }
 
     protected function newClient(): Client

@@ -3,13 +3,8 @@
 namespace Rockbuzz\SpClient;
 
 use Rockbuzz\SpClient\Api;
-use Rockbuzz\SpClient\Data\Subscriber;
-use Rockbuzz\SpClient\Data\Tag;
-use Illuminate\Support\Collection;
-use Rockbuzz\SpClient\Data\Campaign;
-use Rockbuzz\SpClient\Events\TagCreated;
-use Rockbuzz\SpClient\Events\CampaignCreated;
-use Rockbuzz\SpClient\Events\SubscriberCreated;
+use Rockbuzz\SpClient\Data\{Subscriber, Tag, Campaign};
+use Rockbuzz\SpClient\Events\{TagCreated, CampaignCreated, SubscriberCreated};
 
 class Client
 {

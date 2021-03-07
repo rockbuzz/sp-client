@@ -22,28 +22,28 @@ class Api
             ->asJson();
     }
 
-    public function get(string $uri): Response
+    public function get(string $uri)
     {
-        return $this->request->get($uri);
+        return $this->request->get($uri)->resolveForClient();
     }
 
     public function post(string $uri, array $data): Response
     {
-        return $this->request->post($uri, $data);
+        return $this->request->post($uri, $data)->resolveForClient();
     }
 
     public function put(string $uri, array $data): Response
     {
-        return $this->request->put($uri, $data);
+        return $this->request->put($uri, $data)->resolveForClient();
     }
 
     public function patch(string $uri, array $data): Response
     {
-        return $this->request->patch($uri, $data);
+        return $this->request->patch($uri, $data)->resolveForClient();
     }
 
     public function delete(string $uri): Response
     {
-        return $this->request->delete($uri);
+        return $this->request->delete($uri)->resolveForClient();
     }
 }

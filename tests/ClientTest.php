@@ -5,6 +5,8 @@ namespace Tests;
 use Carbon\Carbon;
 use Rockbuzz\SpClient\Client;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Validation\ValidationException;
 use Rockbuzz\SpClient\Data\{Tag, Campaign, Subscriber};
 
 class ClientTest extends TestCase
@@ -175,11 +177,48 @@ class ClientTest extends TestCase
             $fullUrl =>  Http::response(json_encode($data), 201)
         ]);
 
-        $campaign = $this->newClient()->addCampaign(['name' => 'Test Tag']);
+        $campaign = $this->newClient()->addCampaign($data['data']);
 
         $this->assertInstanceOf(Campaign::class, $campaign);
         $this->assertEquals($campaign->id, 1);
         $this->assertEquals($campaign->subject, 'My Campaign Subject');
+    }
+
+    /** @test */
+    public function it_should_return_an_validation_exception_when_add_campaign_data_is_missing()
+    {
+        $fullUrl = "{$this->baseUrl}/api/v1/campaigns";
+
+        $data = [
+            'message' => 'The given data was invalid.',
+            'errors' => [
+                "name" => [
+                    'The name field is required.'
+                ]
+            ]
+        ];
+
+        Http::fake([
+            $fullUrl =>  Http::response(json_encode($data), 422)
+        ]);
+
+        $this->expectException(ValidationException::class);
+
+        $this->newClient()->addCampaign([]);
+    }
+
+    /** @test */
+    public function it_should_return_an_request_exception_when_add_campaign_is_different_from_422()
+    {
+        $fullUrl = "{$this->baseUrl}/api/v1/campaigns";
+
+        Http::fake([
+            $fullUrl =>  Http::response(json_encode([]), 500)
+        ]);
+
+        $this->expectException(RequestException::class);
+
+        $this->newClient()->addCampaign([]);
     }
 
     /** @test */

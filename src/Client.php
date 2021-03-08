@@ -19,7 +19,10 @@ class Client
     }
 
     /**
-     * @inheritDoc
+     * Returns an array with the campaigns data, links and meta indexes
+     *
+     * @param integer $page
+     * @return array
      */
     public function campaigns(int $page = 1): array
     {
@@ -30,7 +33,10 @@ class Client
     }
 
     /**
-     * @inheritDoc
+     * Return campaign br ID
+     *
+     * @param integer $id
+     * @return Campaign
      */
     public function campaign(int $id): Campaign
     {
@@ -38,7 +44,10 @@ class Client
     }
 
     /**
-     * @inheritDoc
+     * Add campaign
+     *
+     * @param array $data
+     * @return Campaign
      */
     public function addCampaign(array $data): Campaign
     {
@@ -51,7 +60,10 @@ class Client
     }
 
     /**
-     * @inheritDoc
+     * Returns an array with the tags data, links and meta indexes
+     *
+     * @param integer $page
+     * @return array
      */
     public function tags(int $page = 1): array
     {
@@ -62,7 +74,10 @@ class Client
     }
 
     /**
-     * @inheritDoc
+     * Return tag by ID
+     *
+     * @param integer $id
+     * @return Tag
      */
     public function tag(int $id): Tag
     {
@@ -70,7 +85,10 @@ class Client
     }
 
     /**
-     * @inheritDoc
+     * Add tag
+     *
+     * @param array $data
+     * @return Tag
      */
     public function addTag(array $data): Tag
     {
@@ -83,7 +101,10 @@ class Client
     }
 
     /**
-     * @inheritDoc
+     * Returns an array with the subscribers data, links and meta indexes
+     *
+     * @param integer $page
+     * @return array
      */
     public function subscribers(int $page = 1): array
     {
@@ -94,7 +115,10 @@ class Client
     }
 
     /**
-     * @inheritDoc
+     * Return subscriber by ID
+     *
+     * @param integer $id
+     * @return Subscriber
      */
     public function subscriber(int $id): Subscriber
     {
@@ -102,7 +126,10 @@ class Client
     }
 
     /**
-     * @inheritDoc
+     * Add subscriber
+     *
+     * @param array $data
+     * @return Subscriber
      */
     public function addSubscriber(array $data): Subscriber
     {
@@ -115,7 +142,10 @@ class Client
     }
 
     /**
-     * @inheritDoc
+     * Send campaign emails 
+     *
+     * @param integer $id
+     * @return Campaign
      */
     public function send(int $id): Campaign
     {

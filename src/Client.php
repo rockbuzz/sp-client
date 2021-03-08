@@ -142,7 +142,7 @@ class Client
     }
 
     /**
-     * Send campaign emails 
+     * Send campaign emails
      *
      * @param integer $id
      * @return Campaign

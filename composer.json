@@ -25,8 +25,7 @@
     },
     "require": {
         "php": ">=7.2",
-        "guzzlehttp/guzzle": "^7.2",
-        "spatie/data-transfer-object": "^1.13"
+        "guzzlehttp/guzzle": "^7.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0",

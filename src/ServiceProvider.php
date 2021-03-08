@@ -2,9 +2,13 @@
 
 namespace Rockbuzz\SpClient;
 
+use DomainException;
+use Illuminate\Support\Collection;
 use Illuminate\Http\Client\Response;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\ServiceProvider as SupportServiceProvider;
+use ReflectionClass;
+use Rockbuzz\SpClient\Data\Base;
 
 class ServiceProvider extends SupportServiceProvider
 {
@@ -26,6 +30,21 @@ class ServiceProvider extends SupportServiceProvider
             }
 
             return $this->throw();
+        });
+
+        Collection::macro('mapDataWithType', function (string $calssName) {
+            if (!(new ReflectionClass($calssName))->isSubclassOf(Base::class)) {
+                throw new DomainException(
+                    "Class '{$calssName}' must be a Rockbuzz\SpClient\Data\Base::class subclass."
+                );
+            }
+            /** @var Collection $this */
+            return $this->map(function ($items, $key) use ($calssName) {
+                if ('data' === $key) {
+                    return $calssName::arrayOf($items);
+                }
+                return $items;
+            });
         });
     }
 

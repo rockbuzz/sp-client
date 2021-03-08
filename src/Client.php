@@ -23,14 +23,10 @@ class Client
      */
     public function campaigns(int $page = 1): array
     {
-        return collect(
-            $this->api->get("/api/v1/campaigns?page={$page}")->json()
-        )->map(function ($items, $key) {
-            if ('data' === $key) {
-                return Campaign::arrayOf($items);
-            }
-            return $items;
-        })->toArray();
+        return $this->mountDataResult(
+            $this->api->get("/api/v1/campaigns?page={$page}")->json(),
+            Campaign::class
+        );
     }
 
     /**
@@ -59,14 +55,10 @@ class Client
      */
     public function tags(int $page = 1): array
     {
-        return collect(
-            $this->api->get("/api/v1/tags?page={$page}")->json()
-        )->map(function ($items, $key) {
-            if ('data' === $key) {
-                return Tag::arrayOf($items);
-            }
-            return $items;
-        })->toArray();
+        return $this->mountDataResult(
+            $this->api->get("/api/v1/tags?page={$page}")->json(),
+            Tag::class
+        );
     }
 
     /**
@@ -95,14 +87,10 @@ class Client
      */
     public function subscribers(int $page = 1): array
     {
-        return collect(
-            $this->api->get("/api/v1/subscribers?page={$page}")->json()
-        )->map(function ($items, $key) {
-            if ('data' === $key) {
-                return Subscriber::arrayOf($items);
-            }
-            return $items;
-        })->toArray();
+        return $this->mountDataResult(
+            $this->api->get("/api/v1/subscribers?page={$page}")->json(),
+            Subscriber::class
+        );
     }
 
     /**
@@ -129,8 +117,18 @@ class Client
     /**
      * @inheritDoc
      */
-    public function send(int $id): array
+    public function send(int $id): Campaign
     {
-        return $this->api->post("/api/v1/campaigns/{$id}/send", [])['data'];
+        return new Campaign($this->api->post("/api/v1/campaigns/{$id}/send", [])['data']);
+    }
+
+    /**
+     * @param array $data
+     * @param string $itemType
+     * @return array
+     */
+    protected function mountDataResult(array $data, string $itemType): array
+    {
+        return collect($data)->mapDataWithType($itemType)->toArray();
     }
 }

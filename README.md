@@ -38,9 +38,11 @@ $client->addCampaign(array $data): Campaign;
 $client->tags(int $page = 1): array;
 $client->tag(int $id): Tag;
 $client->addTag(array $data): Tag;
+$client->changeTag(int $id, array $data): Tag;
 $client->subscribers(int $page = 1): array;
 $client->subscriber(int $id): Subscriber
 $client->addSubscriber(array $data): Subscriber;
+$client->changeSubscriber(int $id, array $data): Subscriber;
 $client->send(int $id): Campaign
 ```
 

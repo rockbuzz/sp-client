@@ -4,7 +4,13 @@ namespace Rockbuzz\SpClient;
 
 use Rockbuzz\SpClient\Api;
 use Rockbuzz\SpClient\Data\{Subscriber, Tag, Campaign};
-use Rockbuzz\SpClient\Events\{TagCreated, CampaignCreated, SubscriberCreated};
+use Rockbuzz\SpClient\Events\{
+    TagCreated,
+    CampaignCreated,
+    SubscriberCreated,
+    TagUpdated,
+    SubscriberUpdated
+};
 
 class Client
 {
@@ -101,6 +107,23 @@ class Client
     }
 
     /**
+     * Change tag
+     *
+     * @param int $id
+     * @param array $data
+     * @return Tag
+     */
+    public function changeTag(int $id, array $data): Tag
+    {
+        return tap(
+            new Tag($this->api->put("/api/v1/tags/{$id}", $data)['data']),
+            function ($tag) {
+                TagUpdated::dispatch($tag);
+            }
+        );
+    }
+
+    /**
      * Returns an array with the subscribers data, links and meta indexes
      *
      * @param integer $page
@@ -137,6 +160,22 @@ class Client
             new Subscriber($this->api->post("/api/v1/subscribers", $data)['data']),
             function ($subscriber) {
                 SubscriberCreated::dispatch($subscriber);
+            }
+        );
+    }
+
+    /**
+     * Change subscriber
+     *
+     * @param array $data
+     * @return Subscriber
+     */
+    public function changeSubscriber(int $id, array $data): Subscriber
+    {
+        return tap(
+            new Subscriber($this->api->put("/api/v1/subscribers/{$id}", $data)['data']),
+            function ($subscriber) {
+                SubscriberUpdated::dispatch($subscriber);
             }
         );
     }

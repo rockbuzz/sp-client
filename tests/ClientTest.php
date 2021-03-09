@@ -324,6 +324,31 @@ class ClientTest extends TestCase
     }
 
     /** @test */
+    public function it_should_return_tag_updated()
+    {
+        $data = [
+            'data' => [
+                "id" => 1,
+                "name" => "Test Tag Updated",
+                "created_at" => "2020-03-23 12:44:14",
+                "update_at" => "2020-03-23 12:44:14"
+            ]
+        ];
+
+        Http::fake(function () use ($data) {
+            return Http::response(json_encode($data), 200);
+        });
+
+        $tag = $this->newClient()->changeTag(1, ['name' => 'Test Tag Updated']);
+
+        $this->assertInstanceOf(Tag::class, $tag);
+        $this->assertEquals($tag->id, 1);
+        $this->assertEquals($tag->name, 'Test Tag Updated');
+        $this->assertEquals($tag->created_at, '2020-03-23 12:44:14');
+        $this->assertEquals($tag->update_at, '2020-03-23 12:44:14');
+    }
+
+    /** @test */
     public function it_should_return_subscribers()
     {
         $fullUrl = "{$this->baseUrl}/api/v1/subscribers?page=1";
@@ -433,6 +458,41 @@ class ClientTest extends TestCase
         $this->assertInstanceOf(Subscriber::class, $subscriber);
         $this->assertEquals($subscriber->id, 1);
         $this->assertEquals($subscriber->first_name, 'Test');
+        $this->assertEquals($subscriber->last_name, 'Subscriber');
+        $this->assertEquals($subscriber->unsubscribed_at, null);
+        $this->assertEquals($subscriber->created_at, '2020-03-23 13:44:09');
+        $this->assertEquals($subscriber->updated_at, '2020-03-23 13:44:09');
+    }
+
+    /** @test */
+    public function it_should_return_subscriber_updated()
+    {
+        $data = [
+            'data' => [
+                "id" => 1,
+                "first_name" => "Test Updated",
+                "last_name" => "Subscriber",
+                "email" => "testsubscriber@example.com",
+                "unsubscribed_at" => null,
+                "created_at" => "2020-03-23 13:44:09",
+                "updated_at" =>"2020-03-23 13:44:09"
+            ]
+        ];
+
+        Http::fake(function () use ($data) {
+            return Http::response(json_encode($data), 200);
+        });
+
+        $subscriber = $this->newClient()->changeSubscriber(1, [
+            "first_name" => "Test Updated",
+            "last_name" => "Subscriber",
+            "email" => "testsubscriber@example.com",
+            "unsubscribed_at" => null
+        ]);
+
+        $this->assertInstanceOf(Subscriber::class, $subscriber);
+        $this->assertEquals($subscriber->id, 1);
+        $this->assertEquals($subscriber->first_name, 'Test Updated');
         $this->assertEquals($subscriber->last_name, 'Subscriber');
         $this->assertEquals($subscriber->unsubscribed_at, null);
         $this->assertEquals($subscriber->created_at, '2020-03-23 13:44:09');

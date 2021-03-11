@@ -80,6 +80,20 @@ class Client
     }
 
     /**
+     * Returns all tags without pagination
+     *
+     * @param integer $page
+     * @return array
+     */
+    public function allTags(): array
+    {
+        return $this->mountDataResult(
+            $this->api->get("/api/v1/all-tags")->json(),
+            Tag::class
+        )['data'];
+    }
+
+    /**
      * Return tag by ID
      *
      * @param integer $id

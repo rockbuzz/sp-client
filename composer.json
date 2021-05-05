@@ -9,8 +9,8 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "TiagoDevWeb",
-            "email": "tiago.dweb@gmail.com"
+            "name": "Tiago Lopes",
+            "email": "tiago@rockbuzz.com.br"
         }
     ],
     "autoload": {
@@ -24,8 +24,8 @@
         }
     },
     "require": {
-        "php": ">=7.2",
-        "guzzlehttp/guzzle": "^6.5.5"
+        "php": ">=7.3",
+        "guzzlehttp/guzzle": "^7.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0",

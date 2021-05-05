@@ -36,6 +36,7 @@ $client->campaigns(int $page = 1): array;
 $client->campaign(int $id): Campaign;
 $client->addCampaign(array $data): Campaign;
 $client->tags(int $page = 1): array;
+$client->allTags(): array;
 $client->tag(int $id): Tag;
 $client->addTag(array $data): Tag;
 $client->changeTag(int $id, array $data): Tag;

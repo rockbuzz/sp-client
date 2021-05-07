@@ -170,20 +170,35 @@ class Client
     /**
      * Returns an array with the subscribers from tag with data, links and meta indexes
      *
-     * @param integer $id Tag ID
+     * @param integer $tagId
      * @param integer $page
      * @return array
      */
-    public function subscribersFromTag(int $id, int $page = 1): array
+    public function subscribersFromTag(int $tagId, int $page = 1): array
     {
         return $this->mountDataResult(
-            $this->api->get("/api/v1/tags/{$id}/subscribers?page={$page}")->json(),
+            $this->api->get("/api/v1/tags/{$tagId}/subscribers?page={$page}")->json(),
             Subscriber::class
         );
     }
 
     /**
-     * Returns an array with the subscribers data, links and meta indexes
+     * Returns an array deleted subscribers from tag
+     *
+     * @param integer $tagId
+     * @param integer[] $subscribersId
+     * @return array
+     */
+    public function deleteSubscribersFromTag(int $tagId, array $subscribersId): array
+    {
+        return $this->mountDataResult(
+            $this->api->delete("/api/v1/tags/{$tagId}/subscribers", $subscribersId)->json(),
+            Subscriber::class
+        );
+    }
+
+    /**
+     * Returns an array subscribers data, links and meta indexes
      *
      * @param integer $page
      * @return array

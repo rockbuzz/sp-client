@@ -42,8 +42,8 @@ class Api
         return $this->request->patch($uri, $data)->resolveForClient();
     }
 
-    public function delete(string $uri): Response
+    public function delete(string $uri, array $data = []): Response
     {
-        return $this->request->delete($uri)->resolveForClient();
+        return $this->request->delete($uri, $data)->resolveForClient();
     }
 }

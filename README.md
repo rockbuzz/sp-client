@@ -6,7 +6,7 @@ Simple SDK for communication with sendportal api.
 
 ## Requirements
 
-PHP >=7.2
+PHP >=7.3
 
 ## Development environment
 
@@ -40,6 +40,8 @@ $client->allTags(): array;
 $client->tag(int $id): Tag;
 $client->addTag(array $data): Tag;
 $client->changeTag(int $id, array $data): Tag;
+$client->subscribersFromTag(int $tagId, int $page = 1): array;
+$client->deleteSubscribersFromTag(int $tagId, array $subscribersId): array;
 $client->subscribers(int $page = 1): array;
 $client->subscriber(int $id): Subscriber
 $client->addSubscriber(array $data): Subscriber;

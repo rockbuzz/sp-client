@@ -401,6 +401,43 @@ class ClientTest extends TestCase
     }
 
     /** @test */
+    public function it_should_delete_and_return_subscribers_from_tag()
+    {
+        $fullUrl = "{$this->baseUrl}/api/v1/tags/1/subscribers";
+
+        $data = [
+            'data' => [
+                [
+                    "id" => 1,
+                    "first_name" => "Test",
+                    "last_name" => "Subscriber",
+                    "email" => "testsubscriber@example.com",
+                    "unsubscribed_at" => null,
+                    "created_at" => "2020-03-23 13:44:09",
+                    "updated_at" =>"2020-03-23 13:44:09"
+                ],
+                [
+                    "id" => 2,
+                    "first_name" => "Test",
+                    "last_name" => "Subscriber Two",
+                    "email" => "testsubscriber2@example.com",
+                    "unsubscribed_at" => "2020-08-02 08:07:08",
+                    "created_at" => "2020-03-23 13:50:39",
+                    "updated_at" => "2020-03-23 13:50:39"
+                ]
+            ]
+        ];
+
+        Http::fake([
+            $fullUrl =>  Http::response(json_encode($data), 200)
+        ]);
+
+        $result = $this->newClient()->deleteSubscribersFromTag(1, [1, 2]);
+
+        $this->assertInstanceOf(Subscriber::class, $result['data'][0]);
+    }
+
+    /** @test */
     public function it_should_return_subscribers()
     {
         $fullUrl = "{$this->baseUrl}/api/v1/subscribers?page=1";

@@ -168,6 +168,21 @@ class Client
     }
 
     /**
+     * Returns an array with the subscribers from tag with data, links and meta indexes
+     *
+     * @param integer $id Tag ID
+     * @param integer $page
+     * @return array
+     */
+    public function subscribersFromTag(int $id, int $page = 1): array
+    {
+        return $this->mountDataResult(
+            $this->api->get("/api/v1/tags/{$id}/subscribers?page={$page}")->json(),
+            Subscriber::class
+        );
+    }
+
+    /**
      * Returns an array with the subscribers data, links and meta indexes
      *
      * @param integer $page

@@ -24,6 +24,36 @@ class Client
         $this->api = $api ?? new Api;
     }
 
+    public function campaignReportIndex(int $id): array
+    {
+        return $this->api->get("/api/v1/campaigns/{$id}/report")->json();
+    }
+
+    public function campaignReportRecipients(int $id): array
+    {
+        return $this->api->get("/api/v1/campaigns/{$id}/report/recipients")->json();
+    }
+
+    public function campaignReportOpens(int $id): array
+    {
+        return $this->api->get("/api/v1/campaigns/{$id}/report/opens")->json();
+    }
+
+    public function campaignReportClicks(int $id): array
+    {
+        return $this->api->get("/api/v1/campaigns/{$id}/report/clicks")->json();
+    }
+
+    public function campaignReportBounces(int $id): array
+    {
+        return $this->api->get("/api/v1/campaigns/{$id}/report/bounces")->json();
+    }
+
+    public function campaignReportUnsubscribes(int $id): array
+    {
+        return $this->api->get("/api/v1/campaigns/{$id}/report/unsubscribes")->json();
+    }
+
     /**
      * Returns an array with the campaigns data, links and meta indexes
      *

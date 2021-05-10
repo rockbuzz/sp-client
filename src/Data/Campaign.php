@@ -27,8 +27,8 @@ class Campaign extends Base
 {
     use HasDates;
 
-    public function scheduledAt(): ?string
+    public function scheduledAt(): ?Carbon
     {
-        return $this->scheduled_at ? Carbon::createFromTimestamp($this->scheduled_at) : null;
+        return $this->scheduled_at ? Carbon::create($this->scheduled_at) : null;
     }
 }

@@ -63,7 +63,7 @@ class Client
     public function campaigns(int $page = 1): array
     {
         return $this->mountDataResult(
-            $this->api->get(config('sp_client.uri.campaigns')."?page={$page}")->json(),
+            $this->api->get(config('sp_client.uri.campaigns') . "?page={$page}")->json(),
             Campaign::class
         );
     }
@@ -76,7 +76,7 @@ class Client
      */
     public function campaign(int $id): Campaign
     {
-        return new Campaign($this->api->get(config('sp_client.uri.campaigns')."/{$id}")->json()['data']);
+        return new Campaign($this->api->get(config('sp_client.uri.campaigns') . "/{$id}")->json()['data']);
     }
 
     /**
@@ -104,7 +104,7 @@ class Client
     public function tags(int $page = 1): array
     {
         return $this->mountDataResult(
-            $this->api->get(config('sp_client.uri.tags')."?page={$page}")->json(),
+            $this->api->get(config('sp_client.uri.tags') . "?page={$page}")->json(),
             Tag::class
         );
     }
@@ -131,7 +131,7 @@ class Client
      */
     public function tag(int $id): Tag
     {
-        return new Tag($this->api->get(config('sp_client.uri.tags')."/{$id}")->json()['data']);
+        return new Tag($this->api->get(config('sp_client.uri.tags') . "/{$id}")->json()['data']);
     }
 
     /**
@@ -160,7 +160,7 @@ class Client
     public function changeTag(int $id, array $data): Tag
     {
         return tap(
-            new Tag($this->api->put(config('sp_client.uri.tags')."/{$id}", $data)['data']),
+            new Tag($this->api->put(config('sp_client.uri.tags') . "/{$id}", $data)['data']),
             function ($tag) {
                 TagUpdated::dispatch($tag);
             }
@@ -192,7 +192,10 @@ class Client
     public function deleteSubscribersFromTag(int $tagId, array $subscribersId): array
     {
         return $this->mountDataResult(
-            $this->api->delete("/api/v1/tags/{$tagId}/subscribers", $subscribersId)->json(),
+            $this->api->delete(
+                "/api/v1/tags/{$tagId}/subscribers",
+                ['subscribers' => $subscribersId]
+            )->json(),
             Subscriber::class
         );
     }
@@ -206,7 +209,7 @@ class Client
     public function subscribers(int $page = 1): array
     {
         return $this->mountDataResult(
-            $this->api->get(config('sp_client.uri.subscribers')."?page={$page}")->json(),
+            $this->api->get(config('sp_client.uri.subscribers') . "?page={$page}")->json(),
             Subscriber::class
         );
     }
@@ -219,7 +222,7 @@ class Client
      */
     public function subscriber(int $id): Subscriber
     {
-        return new Subscriber($this->api->get(config('sp_client.uri.subscribers')."/{$id}")->json()['data']);
+        return new Subscriber($this->api->get(config('sp_client.uri.subscribers') . "/{$id}")->json()['data']);
     }
 
     /**
@@ -247,7 +250,7 @@ class Client
     public function changeSubscriber(int $id, array $data): Subscriber
     {
         return tap(
-            new Subscriber($this->api->put(config('sp_client.uri.subscribers')."/{$id}", $data)['data']),
+            new Subscriber($this->api->put(config('sp_client.uri.subscribers') . "/{$id}", $data)['data']),
             function ($subscriber) {
                 SubscriberUpdated::dispatch($subscriber);
             }
@@ -262,7 +265,7 @@ class Client
      */
     public function send(int $id): Campaign
     {
-        return new Campaign($this->api->post(config('sp_client.uri.campaigns')."/{$id}/send", [])['data']);
+        return new Campaign($this->api->post(config('sp_client.uri.campaigns') . "/{$id}/send", [])['data']);
     }
 
     /**

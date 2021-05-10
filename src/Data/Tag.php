@@ -2,15 +2,14 @@
 
 namespace Rockbuzz\SpClient\Data;
 
-use Carbon\Carbon;
-use DateTime;
 
+/**
+ * @property integer $id
+ * @property string $name
+ * @property string $created_at
+ * @property string $updated_at
+ */
 class Tag extends Base
 {
     use HasDates;
-
-    public function updatedAt(): DateTime
-    {
-        return Carbon::createFromTimestamp($this->update_at);
-    }
 }

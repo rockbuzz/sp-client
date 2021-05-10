@@ -2,17 +2,16 @@
 
 namespace Rockbuzz\SpClient\Data;
 
-use DateTime;
 use Carbon\Carbon;
 
 trait HasDates
 {
-    public function createdAt(): DateTime
+    public function createdAt(): Carbon
     {
         return Carbon::createFromTimestamp($this->created_at);
     }
 
-    public function updatedAt(): DateTime
+    public function updatedAt(): Carbon
     {
         return Carbon::createFromTimestamp($this->updated_at);
     }

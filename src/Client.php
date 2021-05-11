@@ -2,9 +2,15 @@
 
 namespace Rockbuzz\SpClient;
 
-use Rockbuzz\SpClient\Api;
-use Rockbuzz\SpClient\Events\{CampaignUpdated, TagCreated, CampaignCreated, SubscriberCreated, TagUpdated, SubscriberUpdated};
-use Rockbuzz\SpClient\Data\{Base, Subscriber, Tag, Campaign};
+use Rockbuzz\SpClient\Events\{
+    CampaignUpdated,
+    TagCreated,
+    CampaignCreated,
+    SubscriberCreated,
+    TagUpdated,
+    SubscriberUpdated
+};
+use Rockbuzz\SpClient\Data\{Subscriber, Tag, Campaign};
 
 class Client
 {

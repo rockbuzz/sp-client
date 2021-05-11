@@ -2,7 +2,6 @@
 
 namespace Rockbuzz\SpClient\Data;
 
-
 /**
  * @property integer $id
  * @property string $name

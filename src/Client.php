@@ -3,14 +3,8 @@
 namespace Rockbuzz\SpClient;
 
 use Rockbuzz\SpClient\Api;
-use Rockbuzz\SpClient\Events\{
-    TagCreated,
-    CampaignCreated,
-    SubscriberCreated,
-    TagUpdated,
-    SubscriberUpdated
-};
-use Rockbuzz\SpClient\Data\{Subscriber, Tag, Campaign};
+use Rockbuzz\SpClient\Events\{CampaignUpdated, TagCreated, CampaignCreated, SubscriberCreated, TagUpdated, SubscriberUpdated};
+use Rockbuzz\SpClient\Data\{Base, Subscriber, Tag, Campaign};
 
 class Client
 {
@@ -91,6 +85,23 @@ class Client
             new Campaign($this->api->post(config('sp_client.uri.campaigns'), $data)['data']),
             function ($tag) {
                 CampaignCreated::dispatch($tag);
+            }
+        );
+    }
+
+    /**
+     * Change campaign
+     *
+     * @param int $id
+     * @param array $data
+     * @return Campaign
+     */
+    public function changeCampaign(int $id, array $data): Campaign
+    {
+        return tap(
+            new Campaign($this->api->put(config('sp_client.uri.campaigns') . "/{$id}", $data)['data']),
+            static function ($campaign) {
+                CampaignUpdated::dispatch($campaign);
             }
         );
     }

@@ -30,6 +30,11 @@ abstract class Base
         );
     }
 
+    /**
+     * @param $property
+     * @return mixed
+     * @throws ErrorException
+     */
     public function __get($property)
     {
         if (array_key_exists($property, $this->item)) {
@@ -39,5 +44,14 @@ abstract class Base
         $class = get_class($this);
 
         throw new ErrorException("Undefined property: {$class}::{$property}");
+    }
+
+    /**
+     * @param $property
+     * @return bool
+     */
+    public function __isset($property): bool
+    {
+        return isset($this->item[$property]);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use Tests\Stubs\User;
 use Illuminate\Support\Facades\Config;
 use Rockbuzz\SpClient\ServiceProvider;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
@@ -25,7 +24,7 @@ class TestCase extends OrchestraTestCase
             '--path' => realpath(__DIR__ . '/migrations'),
         ]);
 
-        $this->withFactories(__DIR__.'/factories');
+        $this->withFactories(__DIR__ . '/factories');
 
         Config::set('memberships.models.user', User::class);
     }

@@ -185,6 +185,48 @@ class ClientTest extends TestCase
     }
 
     /** @test */
+    public function it_should_return_campaign_updated()
+    {
+        $data = [
+            'data' => [
+                "id" => 1,
+                "name" => "Test Campaign Updated",
+                "subject" => "My Campaign Subject",
+                "content" => "My Email Content",
+                "status_id" => 1,
+                "template_id" => 1,
+                "email_service_id" => 1,
+                "from_name" => "SendPortal",
+                "from_email" => "test@sendportal.io",
+                "is_open_tracking" => true,
+                "is_click_tracking" => true,
+                "sent_count" => 0,
+                "open_count" => 0,
+                "click_count" => 0,
+                "send_to_all" => true,
+                "tags" => [],
+                "save_as_draft" => false,
+                "scheduled_at" => "2020-07-24 08:46:54",
+                "created_at" => "2020-07-24 08:23:38",
+                "updated_at" => "2020-07-24 09:43:42"
+            ]
+        ];
+
+        Http::fake(function () use ($data) {
+            return Http::response(json_encode($data), 200);
+        });
+
+        $campaign = $this->newClient()->changeCampaign(1, ['name' => 'Test Campaign Updated']);
+
+        $this->assertInstanceOf(Campaign::class, $campaign);
+        $this->assertEquals($campaign->id, 1);
+        $this->assertEquals($campaign->name, 'Test Campaign Updated');
+        $this->assertEquals($campaign->subject, 'My Campaign Subject');
+        $this->assertEquals($campaign->created_at, '2020-07-24 08:23:38');
+        $this->assertEquals($campaign->updated_at, '2020-07-24 09:43:42');
+    }
+
+    /** @test */
     public function it_should_return_an_validation_exception_when_add_campaign_data_is_missing()
     {
         $fullUrl = "{$this->baseUrl}/api/v1/campaigns";
@@ -232,13 +274,13 @@ class ClientTest extends TestCase
                     "id" => 1,
                     "name" => "Test Tag",
                     "created_at" => "2020-03-23 12:44:14",
-                    "update_at" => "2020-03-23 12:44:14"
+                    "updated_at" => "2020-03-23 12:44:14"
                 ],
                 [
                     "id" => 2,
                     "name" => "Test Tag II",
                     "created_at" => "2020-03-23 12:44:14",
-                    "update_at" => "2020-03-23 12:44:14"
+                    "updated_at" => "2020-03-23 12:44:14"
                 ]
             ],
             'links' => [
@@ -277,7 +319,7 @@ class ClientTest extends TestCase
                 "id" => 1,
                 "name" => "Test Tag",
                 "created_at" => "2020-03-23 12:44:14",
-                "update_at" => "2020-03-23 12:44:14"
+                "updated_at" => "2020-03-23 12:44:14"
             ]
         ];
 
@@ -291,7 +333,7 @@ class ClientTest extends TestCase
         $this->assertEquals($tag->id, 1);
         $this->assertEquals($tag->name, 'Test Tag');
         $this->assertEquals($tag->created_at, '2020-03-23 12:44:14');
-        $this->assertEquals($tag->update_at, '2020-03-23 12:44:14');
+        $this->assertEquals($tag->updated_at, '2020-03-23 12:44:14');
         $this->assertInstanceOf(Carbon::class, $tag->createdAt());
         $this->assertInstanceOf(Carbon::class, $tag->updatedAt());
     }
@@ -306,7 +348,7 @@ class ClientTest extends TestCase
                 "id" => 1,
                 "name" => "Test Tag",
                 "created_at" => "2020-03-23 12:44:14",
-                "update_at" => "2020-03-23 12:44:14"
+                "updated_at" => "2020-03-23 12:44:14"
             ]
         ];
 
@@ -320,7 +362,7 @@ class ClientTest extends TestCase
         $this->assertEquals($tag->id, 1);
         $this->assertEquals($tag->name, 'Test Tag');
         $this->assertEquals($tag->created_at, '2020-03-23 12:44:14');
-        $this->assertEquals($tag->update_at, '2020-03-23 12:44:14');
+        $this->assertEquals($tag->updated_at, '2020-03-23 12:44:14');
     }
 
     /** @test */
@@ -331,7 +373,7 @@ class ClientTest extends TestCase
                 "id" => 1,
                 "name" => "Test Tag Updated",
                 "created_at" => "2020-03-23 12:44:14",
-                "update_at" => "2020-03-23 12:44:14"
+                "updated_at" => "2020-03-23 12:44:14"
             ]
         ];
 
@@ -345,7 +387,7 @@ class ClientTest extends TestCase
         $this->assertEquals($tag->id, 1);
         $this->assertEquals($tag->name, 'Test Tag Updated');
         $this->assertEquals($tag->created_at, '2020-03-23 12:44:14');
-        $this->assertEquals($tag->update_at, '2020-03-23 12:44:14');
+        $this->assertEquals($tag->updated_at, '2020-03-23 12:44:14');
     }
 
     /** @test */

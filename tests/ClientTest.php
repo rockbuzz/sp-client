@@ -90,7 +90,7 @@ class ClientTest extends TestCase
         ];
 
         Http::fake([
-            $fullUrl =>  Http::response(json_encode($data), 200)
+            $fullUrl => Http::response(json_encode($data), 200)
         ]);
 
         $result = $this->newClient()->campaigns();
@@ -129,7 +129,7 @@ class ClientTest extends TestCase
         ];
 
         Http::fake([
-            $fullUrl =>  Http::response(json_encode($data), 200)
+            $fullUrl => Http::response(json_encode($data), 200)
         ]);
 
         $campaign = $this->newClient()->campaign(1);
@@ -174,7 +174,7 @@ class ClientTest extends TestCase
         ];
 
         Http::fake([
-            $fullUrl =>  Http::response(json_encode($data), 201)
+            $fullUrl => Http::response(json_encode($data), 201)
         ]);
 
         $campaign = $this->newClient()->addCampaign($data['data']);
@@ -241,7 +241,7 @@ class ClientTest extends TestCase
         ];
 
         Http::fake([
-            $fullUrl =>  Http::response(json_encode($data), 422)
+            $fullUrl => Http::response(json_encode($data), 422)
         ]);
 
         $this->expectException(ValidationException::class);
@@ -255,7 +255,7 @@ class ClientTest extends TestCase
         $fullUrl = "{$this->baseUrl}/api/v1/campaigns";
 
         Http::fake([
-            $fullUrl =>  Http::response(json_encode([]), 500)
+            $fullUrl => Http::response(json_encode([]), 500)
         ]);
 
         $this->expectException(RequestException::class);
@@ -301,7 +301,7 @@ class ClientTest extends TestCase
         ];
 
         Http::fake([
-            $fullUrl =>  Http::response(json_encode($data), 200)
+            $fullUrl => Http::response(json_encode($data), 200)
         ]);
 
         $result = $this->newClient()->tags();
@@ -324,7 +324,7 @@ class ClientTest extends TestCase
         ];
 
         Http::fake([
-            $fullUrl =>  Http::response(json_encode($data), 200)
+            $fullUrl => Http::response(json_encode($data), 200)
         ]);
 
         $tag = $this->newClient()->tag(1);
@@ -353,7 +353,7 @@ class ClientTest extends TestCase
         ];
 
         Http::fake([
-            $fullUrl =>  Http::response(json_encode($data), 201)
+            $fullUrl => Http::response(json_encode($data), 201)
         ]);
 
         $tag = $this->newClient()->addTag(['name' => 'Test Tag']);
@@ -404,7 +404,7 @@ class ClientTest extends TestCase
                     "email" => "testsubscriber@example.com",
                     "unsubscribed_at" => null,
                     "created_at" => "2020-03-23 13:44:09",
-                    "updated_at" =>"2020-03-23 13:44:09"
+                    "updated_at" => "2020-03-23 13:44:09"
                 ],
                 [
                     "id" => 2,
@@ -434,7 +434,7 @@ class ClientTest extends TestCase
         ];
 
         Http::fake([
-            $fullUrl =>  Http::response(json_encode($data), 200)
+            $fullUrl => Http::response(json_encode($data), 200)
         ]);
 
         $result = $this->newClient()->subscribersFromTag(1);
@@ -456,7 +456,7 @@ class ClientTest extends TestCase
                     "email" => "testsubscriber@example.com",
                     "unsubscribed_at" => null,
                     "created_at" => "2020-03-23 13:44:09",
-                    "updated_at" =>"2020-03-23 13:44:09"
+                    "updated_at" => "2020-03-23 13:44:09"
                 ],
                 [
                     "id" => 2,
@@ -471,7 +471,7 @@ class ClientTest extends TestCase
         ];
 
         Http::fake([
-            $fullUrl =>  Http::response(json_encode($data), 200)
+            $fullUrl => Http::response(json_encode($data), 200)
         ]);
 
         $result = $this->newClient()->deleteSubscribersFromTag(1, [1, 2]);
@@ -493,7 +493,7 @@ class ClientTest extends TestCase
                     "email" => "testsubscriber@example.com",
                     "unsubscribed_at" => null,
                     "created_at" => "2020-03-23 13:44:09",
-                    "updated_at" =>"2020-03-23 13:44:09"
+                    "updated_at" => "2020-03-23 13:44:09"
                 ],
                 [
                     "id" => 2,
@@ -523,7 +523,7 @@ class ClientTest extends TestCase
         ];
 
         Http::fake([
-            $fullUrl =>  Http::response(json_encode($data), 200)
+            $fullUrl => Http::response(json_encode($data), 200)
         ]);
 
         $result = $this->newClient()->subscribers();
@@ -544,12 +544,12 @@ class ClientTest extends TestCase
                 "email" => "testsubscriber@example.com",
                 "unsubscribed_at" => null,
                 "created_at" => "2020-03-23 13:44:09",
-                "updated_at" =>"2020-03-23 13:44:09"
+                "updated_at" => "2020-03-23 13:44:09"
             ]
         ];
 
         Http::fake([
-            $fullUrl =>  Http::response(json_encode($data), 200)
+            $fullUrl => Http::response(json_encode($data), 200)
         ]);
 
         $subscriber = $this->newClient()->subscriber(1);
@@ -576,12 +576,12 @@ class ClientTest extends TestCase
                 "email" => "testsubscriber@example.com",
                 "unsubscribed_at" => null,
                 "created_at" => "2020-03-23 13:44:09",
-                "updated_at" =>"2020-03-23 13:44:09"
+                "updated_at" => "2020-03-23 13:44:09"
             ]
         ];
 
         Http::fake([
-            $fullUrl =>  Http::response(json_encode($data), 201)
+            $fullUrl => Http::response(json_encode($data), 201)
         ]);
 
         $subscriber = $this->newClient()->addSubscriber(['name' => 'Test Tag']);
@@ -606,7 +606,7 @@ class ClientTest extends TestCase
                 "email" => "testsubscriber@example.com",
                 "unsubscribed_at" => null,
                 "created_at" => "2020-03-23 13:44:09",
-                "updated_at" =>"2020-03-23 13:44:09"
+                "updated_at" => "2020-03-23 13:44:09"
             ]
         ];
 
@@ -628,6 +628,39 @@ class ClientTest extends TestCase
         $this->assertEquals($subscriber->unsubscribed_at, null);
         $this->assertEquals($subscriber->created_at, '2020-03-23 13:44:09');
         $this->assertEquals($subscriber->updated_at, '2020-03-23 13:44:09');
+    }
+
+    /** @test */
+    public function it_should_return_subscriber_added_tags()
+    {
+        $fullUrl = "{$this->baseUrl}/api/v1/subscribers/1/tags";
+
+        $data = [
+            'data' => [
+                [
+                    "id" => 1,
+                    "name" => "Test Tag",
+                    "created_at" => "2020-03-23 12:44:14",
+                    "updated_at" => "2020-03-23 12:44:14"
+                ],
+                [
+                    "id" => 2,
+                    "name" => "Test Tag 2",
+                    "created_at" => "2020-03-22 12:44:14",
+                    "updated_at" => "2020-03-22 12:44:14"
+                ]
+            ]
+        ];
+
+        Http::fake([
+            $fullUrl => Http::response(json_encode($data), 201)
+        ]);
+
+        $tags = $this->newClient()->addTagsFromSubscriber(1, [1, 2]);
+
+        $this->assertIsArray($tags);
+        $this->assertEquals($tags['data'][0]->id, 1);
+        $this->assertEquals($tags['data'][1]->id, 2);
     }
 
     protected function newClient(): Client

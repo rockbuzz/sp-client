@@ -10,7 +10,7 @@ use Rockbuzz\SpClient\Events\{
     TagUpdated,
     SubscriberUpdated
 };
-use Rockbuzz\SpClient\Data\{Subscriber, Tag, Campaign};
+use Rockbuzz\SpClient\Data\{Base, Subscriber, Tag, Campaign};
 
 class Client
 {
@@ -271,6 +271,24 @@ class Client
             function ($subscriber) {
                 SubscriberUpdated::dispatch($subscriber);
             }
+        );
+    }
+
+    /**
+     * Add tags to subscriber
+     *
+     * @param int $subscriberId
+     * @param array $tags
+     * @return array
+     */
+    public function addTagsFromSubscriber(int $subscriberId, array $tags): array
+    {
+        return $this->mountDataResult(
+            $this->api->post(
+                config('sp_client.uri.subscribers') . "/{$subscriberId}/tags",
+                ['tags' => $tags]
+            )->json(),
+            Tag::class
         );
     }
 

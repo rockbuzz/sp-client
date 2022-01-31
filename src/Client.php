@@ -3,14 +3,14 @@
 namespace Rockbuzz\SpClient;
 
 use Rockbuzz\SpClient\Events\{
-    CampaignUpdated,
+    TagUpdated,
     TagCreated,
     CampaignCreated,
-    SubscriberCreated,
-    TagUpdated,
-    SubscriberUpdated
+    CampaignUpdated,
+    SubscriberUpdated,
+    SubscriberCreated
 };
-use Rockbuzz\SpClient\Data\{Base, Subscriber, Tag, Campaign};
+use Rockbuzz\SpClient\Data\{Subscriber, Tag, Campaign};
 
 class Client
 {
@@ -89,8 +89,8 @@ class Client
     {
         return tap(
             new Campaign($this->api->post(config('sp_client.uri.campaigns'), $data)['data']),
-            function ($tag) {
-                CampaignCreated::dispatch($tag);
+            static function ($campaign) {
+                CampaignCreated::dispatch($campaign);
             }
         );
     }
@@ -135,7 +135,7 @@ class Client
     public function allTags(): array
     {
         return $this->mountDataResult(
-            $this->api->get("/api/v1/all-tags")->json(),
+            $this->api->get(config('sp_client.uri.tags') . '?all=true')->json(),
             Tag::class
         )['data'];
     }
@@ -161,7 +161,7 @@ class Client
     {
         return tap(
             new Tag($this->api->post(config('sp_client.uri.tags'), $data)['data']),
-            function ($tag) {
+            static function ($tag) {
                 TagCreated::dispatch($tag);
             }
         );
@@ -178,9 +178,27 @@ class Client
     {
         return tap(
             new Tag($this->api->put(config('sp_client.uri.tags') . "/{$id}", $data)['data']),
-            function ($tag) {
+            static function ($tag) {
                 TagUpdated::dispatch($tag);
             }
+        );
+    }
+
+    /**
+     * Add subscribers to tag
+     *
+     * @param int $tagId
+     * @param array $subscribers
+     * @return array
+     */
+    public function addSubscribersFromTag(int $tagId, array $subscribers): array
+    {
+        return $this->mountDataResult(
+            $this->api->post(
+                config('sp_client.uri.tags') . "/{$tagId}/subscribers",
+                ['subscribers' => $subscribers]
+            )->json(),
+            Subscriber::class
         );
     }
 
@@ -194,7 +212,7 @@ class Client
     public function subscribersFromTag(int $tagId, int $page = 1): array
     {
         return $this->mountDataResult(
-            $this->api->get("/api/v1/tags/{$tagId}/subscribers?page={$page}")->json(),
+            $this->api->get(config('sp_client.uri.tags') . "/{$tagId}/subscribers?page={$page}")->json(),
             Subscriber::class
         );
     }
@@ -210,7 +228,7 @@ class Client
     {
         return $this->mountDataResult(
             $this->api->delete(
-                "/api/v1/tags/{$tagId}/subscribers",
+                config('sp_client.uri.tags') . "/{$tagId}/subscribers",
                 ['subscribers' => $subscribersId]
             )->json(),
             Subscriber::class
@@ -252,7 +270,7 @@ class Client
     {
         return tap(
             new Subscriber($this->api->post(config('sp_client.uri.subscribers'), $data)['data']),
-            function ($subscriber) {
+            static function ($subscriber) {
                 SubscriberCreated::dispatch($subscriber);
             }
         );
@@ -261,6 +279,7 @@ class Client
     /**
      * Change subscriber
      *
+     * @param int $id
      * @param array $data
      * @return Subscriber
      */
@@ -268,7 +287,7 @@ class Client
     {
         return tap(
             new Subscriber($this->api->put(config('sp_client.uri.subscribers') . "/{$id}", $data)['data']),
-            function ($subscriber) {
+            static function ($subscriber) {
                 SubscriberUpdated::dispatch($subscriber);
             }
         );

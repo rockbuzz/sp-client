@@ -6,6 +6,7 @@ return [
     'uri' => [
         'campaigns' => "/api/v1/campaigns",
         'tags' => "/api/v1/tags",
+        'all_tags' => "/api/v1/all-tags",
         'subscribers' => "/api/v1/subscribers",
     ]
 ];

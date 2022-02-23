@@ -135,7 +135,7 @@ class Client
     public function allTags(): array
     {
         return $this->mountDataResult(
-            $this->api->get(config('sp_client.uri.tags') . '?all=true')->json(),
+            $this->api->get(config('sp_client.uri.all_tags'))->json(),
             Tag::class
         )['data'];
     }
